@@ -2,10 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const cells = document.querySelectorAll('.cell');
     const status = document.querySelector('.status');
     const resetButton = document.querySelector('.reset');
+    const scoreX = document.getElementById('scoreX');
+    const scoreO = document.getElementById('scoreO');
 
     let currentPlayer = 'X';
     let gameActive = true;
     let gameState = ['', '', '', '', '', '', '', '', ''];
+    let score = { X: 0, O: 0 };
 
     const winningConditions = [
         [0, 1, 2],
@@ -40,13 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (checkWin()) {
             showAlert(currentPlayer);
             gameActive = false;
+            score[currentPlayer]++;
+            updateScore();
             return;
         }
 
         checkDraw();
 
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        status.innerHTML = `${currentPlayer}'s turn`;
+        status.innerHTML = `${currentPlayer} | Turno`;
     };
 
     const checkWin = () => {
@@ -64,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let isDraw = !gameState.includes('');
         if (isDraw) {
             gameActive = false;
-            status.innerHTML = 'Draw!';
+            status.innerHTML = 'Empate!';
         }
     };
 
@@ -72,8 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlayer = 'X';
         gameActive = true;
         gameState = ['', '', '', '', '', '', '', '', ''];
-        status.innerHTML = `${currentPlayer}'s turn`;
+        status.innerHTML = `${currentPlayer} | Turno`;
         cells.forEach(cell => cell.innerHTML = '');
+    };
+
+    const updateScore = () => {
+        scoreX.innerText = score.X;
+        scoreO.innerText = score.O;
     };
 
     cells.forEach(cell => cell.addEventListener('click', handleCellClick));
