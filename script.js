@@ -18,6 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
         [2, 4, 6]
     ];
 
+    const showAlert = (winner) => {
+        const alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+        alertDiv.innerHTML = `
+            <strong>${winner}</strong> venceu!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.body.appendChild(alertDiv);
+    };
+
     const handleCellClick = (clickedCellEvent) => {
         const clickedCell = clickedCellEvent.target;
         const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
@@ -27,10 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState[clickedCellIndex] = currentPlayer;
         clickedCell.innerHTML = currentPlayer;
 
-        checkWin();
+        if (checkWin()) {
+            showAlert(currentPlayer);
+            gameActive = false;
+            return;
+        }
+
         checkDraw();
 
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        status.innerHTML = `${currentPlayer}'s turn`;
     };
 
     const checkWin = () => {
@@ -38,18 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const [a, b, c] = condition;
 
             if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
-                gameActive = false;
-                status.innerHTML = `${currentPlayer} venceu!`;
-                return;
+                return true;
             }
         }
+        return false;
     };
 
     const checkDraw = () => {
         let isDraw = !gameState.includes('');
         if (isDraw) {
             gameActive = false;
-            status.innerHTML = 'Empate!';
+            status.innerHTML = 'Draw!';
         }
     };
 
@@ -57,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlayer = 'X';
         gameActive = true;
         gameState = ['', '', '', '', '', '', '', '', ''];
-        status.innerHTML = '';
+        status.innerHTML = `${currentPlayer}'s turn`;
         cells.forEach(cell => cell.innerHTML = '');
     };
 
