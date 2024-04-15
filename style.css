@@ -1,6 +1,25 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+    font-family: Arial, sans-serif!important;
+    text-align: center!important;
+    width: 100%!important;
+    height: 100%!important;
+    background: repeating-linear-gradient(
+        -45deg,
+        orange,
+        orangered 10px,
+        orange 10px,
+        orangered 20px
+      )
+      orange!important;
+    background-blend-mode: screen!important;
+    
+}
+.reset{
+    margin-bottom: 5%;
+}
+
+.score{
+    width: 20%;
 }
 
 .container {
@@ -12,6 +31,7 @@ body {
     grid-template-columns: repeat(3, 100px);
     grid-gap: 5px;
     margin: 20px auto;
+    justify-content: center;
 }
 
 .cell {
